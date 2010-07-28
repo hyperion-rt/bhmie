@@ -26,7 +26,7 @@ contains
 
     ! Find number of wavelengths
     n_wav = 0
-    open(unit=33,file=filename)
+    open(unit=33,file=filename, status='old')
     do
        read(33,*,iostat=ioerr)
        if(ioerr.ne.0) exit
@@ -39,7 +39,7 @@ contains
     allocate(m%refractive_indices(n_wav))
 
     ! Read in values
-    open(unit=33,file=filename)
+    open(unit=33,file=filename, status='old')
     do iw=1,n_wav
        read(33,*) m%wavelengths(iw), ref_real, ref_imag
        m%refractive_indices(iw) = cmplx(ref_real, ref_imag)
