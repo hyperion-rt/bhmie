@@ -64,9 +64,12 @@ contains
     real(dp) :: csca_i(size(wavelengths))
     real(dp) :: cback_i(size(wavelengths))
     real(dp) :: gsca_i(size(wavelengths))
-    complex(dp) :: s1_i(size(wavelengths), 2*(n_angles+n_small_angles)-1)
-    complex(dp) :: s2_i(size(wavelengths), 2*(n_angles+n_small_angles)-1)
-
+    complex(dp) :: s1_i(2*(n_angles+n_small_angles)-1)
+    complex(dp) :: s2_i(2*(n_angles+n_small_angles)-1)
+    real(dp) :: s11_i(2*(n_angles+n_small_angles)-1)
+    real(dp) :: s12_i(2*(n_angles+n_small_angles)-1)
+    real(dp) :: s33_i(2*(n_angles+n_small_angles)-1)
+    real(dp) :: s34_i(2*(n_angles+n_small_angles)-1)
     real(dp) :: x
     ! size parameter
 
@@ -140,20 +143,26 @@ contains
 
                 ! Compute properties for size/wavelength
                 call bhmie(x, m(ic)%refractive_indices(iw), size(angles), &
-                     & s1_i(iw, :), s2_i(iw, :), qext_i, qsca_i, qback_i, gsca_i(iw), angles)
+                     & s1_i, s2_i, qext_i, qsca_i, qback_i, gsca_i(iw), angles)
 
                 ! Compute extinction, scattering, and backscattering cross-sections
                 cext_i(iw) = qext_i * cross_section
                 csca_i(iw) = qsca_i * cross_section
                 cback_i(iw) = qback_i * cross_section
 
-             end do
+                ! Compute scattering matrix elements
+                s11_i = 0.5_dp*(+ abs(s1_i)*abs(s1_i) + abs(s2_i)*abs(s2_i))
+                s12_i = 0.5_dp*(- abs(s1_i)*abs(s1_i) + abs(s2_i)*abs(s2_i))
+                s33_i = real(s2_i * conjg(s1_i), dp)
+                s34_i = aimag(s2_i * conjg(s1_i))
 
-             ! Compute scattering matrix elements
-             s11 = s11 + 0.5_dp*(+ abs(s1_i)*abs(s1_i) + abs(s2_i)*abs(s2_i)) * weight_number
-             s12 = s12 + 0.5_dp*(- abs(s1_i)*abs(s1_i) + abs(s2_i)*abs(s2_i)) * weight_number
-             s33 = s33 + real(s2_i * conjg(s1_i), dp) * weight_number
-             s34 = s34 + aimag(s2_i * conjg(s1_i)) * weight_number
+                ! Add to running total
+                s11(iw, :) = s11(iw, :) + s11_i * weight_number
+                s12(iw, :) = s12(iw, :) + s12_i * weight_number
+                s33(iw, :) = s33(iw, :) + s33_i * weight_number
+                s34(iw, :) = s34(iw, :) + s34_i * weight_number
+
+             end do
 
              ! Add values for single size to the totals
              cext = cext + cext_i * weight_number
