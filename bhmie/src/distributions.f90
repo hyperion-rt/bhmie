@@ -23,7 +23,8 @@ contains
     backspace(unit)
     select case(trim(distribution_type))
     case('power')
-       read(unit,*) distribution_type, d%amin, d%amax, d%apower
+       read(unit,*) distribution_type
+       read(unit,*) d%amin, d%amax, d%apower
        d%type = 1
     case default
        stop "Not implemented"

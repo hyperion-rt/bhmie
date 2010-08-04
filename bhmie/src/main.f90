@@ -35,6 +35,8 @@ program test
   integer :: ic
   ! loop variable for components
 
+  integer :: output_format
+
   ! retrieve parameter file from command-line
   call get_command_argument(1, input_file)
   if(trim(input_file)=='') stop "Usage: bhmie input_file"
@@ -43,7 +45,14 @@ program test
   open(unit=32, file=input_file)
 
   ! read header line
-  read(32,*) prefix, amin, amax, na, n_angles, n_small_angles,n_components
+  read(32,*) prefix
+  read(32,*) output_format
+  read(32,*) amin
+  read(32,*) amax
+  read(32,*) na
+  read(32,*) n_angles
+  read(32,*) n_small_angles
+  read(32,*) n_components
 
   ! allocate arrays
   allocate(abundance(n_components))
@@ -75,6 +84,6 @@ program test
   allocate(wavelengths(size(m(1)%wavelengths)))
   wavelengths = m(1)%wavelengths
 
-  call compute_dust_properties('results/'//trim(prefix),abundance,m,d,density,amin,amax,na,wavelengths,n_angles,n_small_angles)
+  call compute_dust_properties(prefix,output_format,abundance,m,d,density,amin,amax,na,wavelengths,n_angles,n_small_angles)
 
 end program test

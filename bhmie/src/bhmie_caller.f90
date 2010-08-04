@@ -13,12 +13,15 @@ module bhmie_wrapper
 
 contains
 
-  subroutine compute_dust_properties(prefix, abundance, m, d, density, amin, amax, na, wavelengths, n_angles, n_small_angles)
+  subroutine compute_dust_properties(prefix, output_format, abundance, m, d, density, amin, amax, na, wavelengths, n_angles, n_small_angles)
 
     implicit none
 
     character(len=*),intent(in) :: prefix
     ! dust model name
+
+    integer,intent(in) :: output_format
+    ! the file format for outputting
 
     type(material),intent(in) :: m(:)
     ! list of materials
@@ -51,6 +54,7 @@ contains
     real(dp) :: cback(size(wavelengths))
     real(dp) :: kappa_ext(size(wavelengths))
     real(dp) :: gsca(size(wavelengths))
+    real(dp) :: pmax(size(wavelengths))
     real(dp) :: s11(size(wavelengths), 2*(n_angles+n_small_angles)-1)
     real(dp) :: s12(size(wavelengths), 2*(n_angles+n_small_angles)-1)
     real(dp) :: s33(size(wavelengths), 2*(n_angles+n_small_angles)-1)
@@ -114,14 +118,17 @@ contains
     logamin = log10(amin)
     logastep = (log10(amax) - log10(amin)) / real(na, dp)
 
+    call print_progress_bar(1,na)
+
     do ia=1,na
+
+       call delete_progress_bar(ia,na)
+       call print_progress_bar(ia,na)
 
        ! Find lower, central, and upper size for current bin
        a1 = 10._dp**(logamin + logastep * (real(ia, dp)-1._dp))
        a  = 10._dp**(logamin + logastep * (real(ia, dp)-0.5_dp))
        a2 = 10._dp**(logamin + logastep * (real(ia, dp)))
-
-       write(*,'("Computing ",ES11.4," to ",ES11.4)') a1, a2
 
        ! Find the cross section and volume for the current grains
        cross_section = pi*a*a*1.e-8
@@ -180,6 +187,17 @@ contains
     end do
 
     ! Output
+
+    select case(output_format)
+    case(1)
+
+    open(unit=20,file=trim(prefix)//'.summary')
+    do iw=1,size(wavelengths)
+       write(20,'(6(ES11.4,2X))') wavelengths(iw), cext(iw), csca(iw), kappa_ext(iw)*csca(iw)/cext(iw), gsca(iw), -s12(iw,size(angles))/s11(iw,size(angles))
+    end do
+    close(unit=20)
+
+    case(2)
 
     ! Wavelengths
     open(unit=20,file=trim(prefix)//'.wav')
@@ -259,7 +277,28 @@ contains
     end do
     close(unit=20)
 
+    end select
+
   end subroutine compute_dust_properties
+
+  subroutine print_progress_bar(i, imax)
+    implicit none
+    integer,intent(in) :: i, imax
+    character(len=1), parameter :: bar = '='
+    integer :: k
+    write(6,'(2x,1i3,1a1,2x,1a1,256a1)', advance='no') 100*i/imax,'%','|', (bar, k =1,50*i/imax)
+    close(6)
+    open(6)
+    if(i==imax) write(6,'(a)') '| done.'
+  end subroutine print_progress_bar
+
+  subroutine delete_progress_bar(i, imax)
+    implicit none
+    integer,intent(in) :: i, imax
+    character(len=1), parameter :: back = char(8)
+    integer :: k
+    write(6,'(256a1)', advance='no') (back, k =1,(50*i/imax)+9)
+  end subroutine delete_progress_bar
 
 end module bhmie_wrapper
 
