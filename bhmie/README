@@ -1,0 +1,68 @@
+About
+=====
+
+This is a wrapper for the subroutine by C.F. Bohren and D. Huffman, improved
+by B. Draine.
+
+Installation
+============
+
+To install, type:
+
+  make
+
+which will create bin/bhmie. If needed, change the compiler in the Makefile.
+
+Running
+=======
+
+To use, type:
+
+  bin/bhmie parameter_file
+
+for example:
+
+  bin/bhmie example.in
+
+Parameters
+==========
+
+The parameter file contains, in the following order:
+
+- the prefix for the output files
+- the file format, which can be:
+    1 = single file with wavelength, extinction and scattering cross-sections,
+        opacity to absorption, <cos(theta)>, and the maximum linear polarization.
+    2 = separate files for the wavelength (.wav), scattering angles (.mu),
+        albedo (.alb), opacity to extinction (.chi), <cos(theta)> (.g), and the
+        scattering matrix elements (.f11, .f12, .f33, .f34)
+- the minimum grain size to use for the calculations
+- the maximum grain size to use for the calculations
+- the number of grain sizes to use for the calculations
+- the number of main scattering angles between 0 and 90 degrees
+- the number of extra scattering angles close to theta=0 to resolve strong peaks
+- the number of chemical components
+
+After these parameters should be the following parameters, repeated for each
+component:
+
+- a blank line (or separator)
+- the fraction of the mass in the component
+- the density of the grains
+- the file containing the refractive indices
+- the type of dust size distribution
+- the parameters of the dust size distribution
+
+At this time, the only dust size distribution is 'power', and the parameters
+should be written in the form:
+
+amin amax apower
+
+where amin and amax are the minimum and maximum size for the distribution, and
+apower is the power of the size distribution.
+
+Notes
+=====
+
+At this time, all components for a given computation should contain the same
+number of wavelengths, and the values should be given at the same wavelengths.
