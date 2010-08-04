@@ -43,6 +43,8 @@ The parameter file contains, in the following order:
 - the number of main scattering angles between 0 and 90 degrees
 - the number of extra scattering angles close to theta=0 to resolve strong peaks
 - the number of chemical components
+- the gas-to-dust ratio to assume for the opacity (set this to zero if you
+  don't care about gas)
 
 After these parameters should be the following parameters, repeated for each
 component:

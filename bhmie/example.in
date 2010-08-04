@@ -6,6 +6,7 @@
 181 = number of scattering angles
 10 = number of extra fine scattering angles
 1 = number of components
+0 = gas-to-dust ratio
 ---
 1.0 = mass fraction in this component
 3.5 = grain density (g/cm^3)

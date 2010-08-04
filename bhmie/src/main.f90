@@ -36,6 +36,8 @@ program test
   ! loop variable for components
 
   integer :: output_format
+  
+  real(dp) :: gas_to_dust
 
   ! retrieve parameter file from command-line
   call get_command_argument(1, input_file)
@@ -53,6 +55,7 @@ program test
   read(32,*) n_angles
   read(32,*) n_small_angles
   read(32,*) n_components
+  read(32,*) gas_to_dust
 
   ! allocate arrays
   allocate(abundance(n_components))
@@ -84,6 +87,6 @@ program test
   allocate(wavelengths(size(m(1)%wavelengths)))
   wavelengths = m(1)%wavelengths
 
-  call compute_dust_properties(prefix,output_format,abundance,m,d,density,amin,amax,na,wavelengths,n_angles,n_small_angles)
+  call compute_dust_properties(prefix,output_format,abundance,m,d,density,gas_to_dust,amin,amax,na,wavelengths,n_angles,n_small_angles)
 
 end program test

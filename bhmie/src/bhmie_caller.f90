@@ -13,7 +13,7 @@ module bhmie_wrapper
 
 contains
 
-  subroutine compute_dust_properties(prefix, output_format, abundance, m, d, density, amin, amax, na, wavelengths, n_angles, n_small_angles)
+  subroutine compute_dust_properties(prefix, output_format, abundance, m, d, density, gas_to_dust, amin, amax, na, wavelengths, n_angles, n_small_angles)
 
     implicit none
 
@@ -35,7 +35,7 @@ contains
     integer,intent(in) :: na
     ! number of size bins to use
 
-    real(dp),intent(in) :: abundance(:), density(:), wavelengths(:)
+    real(dp),intent(in) :: abundance(:), density(:), gas_to_dust, wavelengths(:)
     ! the density of the grains
 
     integer,intent(inout) :: n_angles, n_small_angles
@@ -189,12 +189,16 @@ contains
 
     end do
 
+    ! Create array with all the angles
     do ia=1,size(angles)
        angles_full(ia) = angles(ia)
     end do
     do ia=1,size(angles)-1
        angles_full(size(angles) + ia) = pi - angles(size(angles)-ia)
     end do
+
+    ! Correct opacity for gas-to-dust
+    kappa_ext = kappa_ext / (1. + gas_to_dust)
 
     ! Output
 
