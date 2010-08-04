@@ -48,6 +48,8 @@ contains
     integer :: ic
     ! loop variable for components
 
+    character(len=100) :: suffix
+
     ! running totals
     real(dp) :: cext(size(wavelengths))
     real(dp) :: csca(size(wavelengths))
@@ -55,6 +57,7 @@ contains
     real(dp) :: kappa_ext(size(wavelengths))
     real(dp) :: gsca(size(wavelengths))
     real(dp) :: pmax(size(wavelengths))
+    real(dp) :: angles_full(2*(n_angles+n_small_angles)-1)
     real(dp) :: s11(size(wavelengths), 2*(n_angles+n_small_angles)-1)
     real(dp) :: s12(size(wavelengths), 2*(n_angles+n_small_angles)-1)
     real(dp) :: s33(size(wavelengths), 2*(n_angles+n_small_angles)-1)
@@ -186,6 +189,13 @@ contains
 
     end do
 
+    do ia=1,size(angles)
+       angles_full(ia) = angles(ia)
+    end do
+    do ia=1,size(angles)-1
+       angles_full(size(angles) + ia) = pi - angles(size(angles)-ia)
+    end do
+
     ! Output
 
     select case(output_format)
@@ -207,12 +217,10 @@ contains
     close(unit=20)
 
     ! Angles
+
     open(unit=20,file=trim(prefix)//'.mu')
-    do ia=1,size(angles)
-       write(20,'(ES23.16)') cos(angles(ia))
-    end do
-    do ia=1,size(angles)-1
-       write(20,'(ES23.16)') -cos(angles(size(angles)-ia))
+    do ia=1,2*size(angles)-1
+       write(20,'(ES23.16)') cos(angles_full(ia))
     end do
     close(unit=20)
 
@@ -276,6 +284,19 @@ contains
        write(20,*)
     end do
     close(unit=20)
+
+    case(3)
+
+       do iw=1,size(wavelengths)
+          write(suffix,'(ES10.4)') wavelengths(iw)
+          open(unit=20,file=trim(prefix)//'.'//trim(suffix))
+          write(20,'(3X,"angle",5X,"S11",9X,"S22",9X,"S33",9X,"S44",9X,"S12",9X,"S34",9X)')
+          do ia=1,size(angles)*2-1
+             write(20,'(F7.2,6(1X,ES11.4))') angles_full(ia)*180._dp/pi, s11(iw,ia),s11(iw,ia),s33(iw,ia),s33(iw,ia),s12(iw,ia),s34(iw,ia)
+          end do
+          write(20,*)
+          close(unit=20)
+       end do
 
     end select
 

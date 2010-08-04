@@ -36,6 +36,7 @@ The parameter file contains, in the following order:
     2 = separate files for the wavelength (.wav), scattering angles (.mu),
         albedo (.alb), opacity to extinction (.chi), <cos(theta)> (.g), and the
         scattering matrix elements (.f11, .f12, .f33, .f34)
+    3 = one file per wavelength, contains the scattering matrix elements
 - the minimum grain size to use for the calculations
 - the maximum grain size to use for the calculations
 - the number of grain sizes to use for the calculations
