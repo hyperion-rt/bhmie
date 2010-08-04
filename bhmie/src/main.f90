@@ -44,7 +44,7 @@ program test
   if(trim(input_file)=='') stop "Usage: bhmie input_file"
 
   ! open parameter file, and read
-  open(unit=32, file=input_file)
+  open(unit=32, file=input_file, status='old')
 
   ! read header line
   read(32,*) prefix
