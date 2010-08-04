@@ -1,2 +1,21 @@
+About
+=====
+
 A collection of routines to compute dust properties. At this stage, 
-these are under active development and mainly for personal use.
+these are under active development and mainly for personal use:
+
+Codes
+=====
+
+bhmie: a wrapper for the Bohren and Huffman subroutine. Computes scattering
+       and absorption properties of distributions of spherical grains.
+
+Downloading
+===========
+
+To download, use
+
+git clone git@github.com:astrofrog/dust.git
+
+For instructions on installing and using, see the README files in the
+different sub-directories.
