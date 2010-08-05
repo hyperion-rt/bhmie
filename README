@@ -19,3 +19,10 @@ git clone http://github.com/astrofrog/dust.git
 
 For instructions on installing and using, see the README files in the
 different sub-directories.
+
+Updating
+========
+
+To update, go inside the dust/ directory, and use
+
+git pull
