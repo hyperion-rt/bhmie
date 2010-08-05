@@ -1,4 +1,4 @@
-FC = gfortran -Jsrc/modules -Isrc/modules -ffree-line-length-none -fbounds-check -g
+FC = @FC@ @extra@
 
 OBJECTS =	src/types.f90 \
 		src/material.f90 \
