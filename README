@@ -17,6 +17,9 @@ To download, use
 
 git clone http://github.com/astrofrog/dust.git
 
+Using
+=====
+
 For instructions on installing and using, see the README files in the
 different sub-directories.
 
