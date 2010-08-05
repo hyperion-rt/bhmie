@@ -300,7 +300,7 @@ contains
           write(20,'(ES11.4," = <cext>")') cext(iw)
           write(20,'(ES11.4," = <csca>")') csca(iw)
           write(20,'(ES11.4," = kappa (cm^2/g)")') kappa_ext(iw)*(1._dp - csca(iw)/cext(iw))
-          write(20,'(ES11.4," = <cos(theta)>")') gsca(iw)
+          write(20,'(F7.4," = <cos(theta)>")') gsca(iw)
           write(20,*)
           write(20,'(3X,"angle",5X,"S11",9X,"S22",9X,"S33",9X,"S44",9X,"S12",9X,"S34",9X)')
           do ia=1,size(angles)*2-1
