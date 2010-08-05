@@ -207,7 +207,7 @@ contains
 
     open(unit=20,file=trim(prefix)//'.summary')
     do iw=1,size(wavelengths)
-       write(20,'(6(ES11.4,2X))') wavelengths(iw), cext(iw), csca(iw), kappa_ext(iw)*csca(iw)/cext(iw), gsca(iw), -s12(iw,size(angles))/s11(iw,size(angles))
+       write(20,'(6(ES11.4,2X))') wavelengths(iw), cext(iw), csca(iw), kappa_ext(iw)*(1._dp - csca(iw)/cext(iw)), gsca(iw), -s12(iw,size(angles))/s11(iw,size(angles))
     end do
     close(unit=20)
 
@@ -294,6 +294,14 @@ contains
        do iw=1,size(wavelengths)
           write(suffix,'(ES10.4)') wavelengths(iw)
           open(unit=20,file=trim(prefix)//'.'//trim(suffix))
+          write(20,'("Dust properties calculated using Bohren and Huffman subroutine")')
+          write(20,'("kappa calculated using gas-to-dust ratio of ",F6.2)') gas_to_dust
+          write(20,'(F8.4," = wavelength (microns)")') wavelengths(iw)
+          write(20,'(ES11.4," = <cext>")') cext(iw)
+          write(20,'(ES11.4," = <csca>")') csca(iw)
+          write(20,'(ES11.4," = kappa (cm^2/g)")') kappa_ext(iw)*(1._dp - csca(iw)/cext(iw))
+          write(20,'(ES11.4," = <cos(theta)>")') gsca(iw)
+          write(20,*)
           write(20,'(3X,"angle",5X,"S11",9X,"S22",9X,"S33",9X,"S44",9X,"S12",9X,"S34",9X)')
           do ia=1,size(angles)*2-1
              write(20,'(F7.2,6(1X,ES11.4))') angles_full(ia)*180._dp/pi, s11(iw,ia),s11(iw,ia),s33(iw,ia),s33(iw,ia),s12(iw,ia),s34(iw,ia)
