@@ -9,6 +9,7 @@ Installation
 
 To install, type:
 
+  ./configure
   make
 
 which will create bin/bhmie. If needed, change the compiler in the Makefile.
