@@ -207,7 +207,7 @@ contains
 
     open(unit=20,file=trim(prefix)//'.summary')
     do iw=1,size(wavelengths)
-       write(20,'(6(ES11.4,2X))') wavelengths(iw), cext(iw), csca(iw), kappa_ext(iw)*(1._dp - csca(iw)/cext(iw)), gsca(iw), -s12(iw,size(angles))/s11(iw,size(angles))
+       write(20,'(6(ES11.4,2X))') wavelengths(iw), cext(iw), csca(iw), kappa_ext(iw), gsca(iw), -s12(iw,size(angles))/s11(iw,size(angles))
     end do
     close(unit=20)
 
