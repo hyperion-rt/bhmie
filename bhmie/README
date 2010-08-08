@@ -38,8 +38,8 @@ The parameter file contains, in the following order:
         albedo (.alb), opacity to extinction (.chi), <cos(theta)> (.g), and the
         scattering matrix elements (.f11, .f12, .f33, .f34)
     3 = one file per wavelength, contains the scattering matrix elements
-- the minimum grain size to use for the calculations
-- the maximum grain size to use for the calculations
+- the minimum grain size to use for the calculations (in microns)
+- the maximum grain size to use for the calculations (in microns)
 - the number of grain sizes to use for the calculations
 - the number of main scattering angles between 0 and 90 degrees
 - the number of extra scattering angles close to theta=0 to resolve strong peaks
@@ -52,18 +52,39 @@ component:
 
 - a blank line (or separator)
 - the fraction of the mass in the component
-- the density of the grains
+- the density of the grains (in g/cm^3)
 - the file containing the refractive indices
 - the type of dust size distribution
 - the parameters of the dust size distribution
 
-At this time, the only dust size distribution is 'power', and the parameters
-should be written in the form:
+There are three types of size distributions supported:
 
-amin amax apower
+* 'power' - a power-law distribution:
 
-where amin and amax are the minimum and maximum size for the distribution, and
-apower is the power of the size distribution.
+    n(a) ~ a^apower
+
+  The parameters to specify are:
+
+    amin amax apower
+
+  where amin and amax are the minimum and maximum size for the distribution,
+  and apower is the power of the size distribution.
+
+* 'ped' - a power-law distribution with exponential dropoff:
+
+    n(a) ~ a^apower * exp(a/aturn)
+
+  The parameters to specify are:
+
+    amin aturn apower
+
+  where amin and aturn are the minimum and turn-off size for the distribution,
+  and apower is the power of the size distribution.
+
+* 'table' - a table containing the relative number of grains as a function of
+  size. This should be given as a two column space-delimited ASCII table where
+  the first column is the grain size in microns, and the second column is the
+  relative number of grains (the distribution is normalized by the code)
 
 Notes
 =====
