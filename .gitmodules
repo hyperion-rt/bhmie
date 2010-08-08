@@ -1,0 +1,3 @@
+[submodule "bhmie/src/fortranlib"]
+	path = bhmie/src/fortranlib
+	url = http://github.com/astrofrog/fortranlib.git

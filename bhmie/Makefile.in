@@ -1,6 +1,7 @@
 FC = @FC@ @extra@
 
 OBJECTS =	src/types.f90 \
+		src/fortranlib/src/lib_array.f90 \
 		src/material.f90 \
 		src/distributions.f90 \
 		src/bhmie.f90 \
