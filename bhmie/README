@@ -46,6 +46,7 @@ The parameter file contains, in the following order:
 - the number of chemical components
 - the gas-to-dust ratio to assume for the opacity (set this to zero if you
   don't care about gas)
+- the minimum, maximum, and number of wavelengths (microns)
 
 After these parameters should be the following parameters, repeated for each
 component:
