@@ -8,7 +8,7 @@ then
 elif test "$FC" == ifort
 then
 	AC_SUBST(posix_module,posix_empty)
-	AC_SUBST(extra,'-module src/modules')
+	AC_SUBST(extra,'-module src/modules -heap-arrays')
 elif test "$FC" == gfortran
 then
 	AC_SUBST(posix_module,posix_empty)

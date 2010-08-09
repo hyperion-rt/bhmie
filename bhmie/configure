@@ -2143,7 +2143,7 @@ elif test "$FC" == ifort
 then
 	posix_module=posix_empty
 
-	extra='-module src/modules'
+	extra='-module src/modules -heap-arrays'
 
 elif test "$FC" == gfortran
 then
