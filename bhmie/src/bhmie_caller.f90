@@ -13,7 +13,8 @@ module bhmie_wrapper
 
 contains
 
-  subroutine compute_dust_properties(prefix, output_format, abundance, m, d, density, gas_to_dust, amin, amax, na, wavelengths, n_angles, n_small_angles)
+  subroutine compute_dust_properties(prefix, output_format, abundance, m, d, &
+       & density, gas_to_dust, amin, amax, na, wavelengths, n_angles, n_small_angles)
 
     implicit none
 
@@ -205,89 +206,90 @@ contains
     select case(output_format)
     case(1)
 
-    open(unit=20,file=trim(prefix)//'.summary')
-    do iw=1,size(wavelengths)
-       write(20,'(6(ES11.4,2X))') wavelengths(iw), cext(iw), csca(iw), kappa_ext(iw), gsca(iw), -s12(iw,size(angles))/s11(iw,size(angles))
-    end do
-    close(unit=20)
+       open(unit=20,file=trim(prefix)//'.summary')
+       do iw=1,size(wavelengths)
+          write(20,'(6(ES11.4,2X))') wavelengths(iw), cext(iw), csca(iw), &
+               & kappa_ext(iw), gsca(iw), -s12(iw,size(angles))/s11(iw,size(angles))
+       end do
+       close(unit=20)
 
     case(2)
 
-    ! Wavelengths
-    open(unit=20,file=trim(prefix)//'.wav')
-    do iw=1,size(wavelengths)
-       write(20,'(ES23.16)') wavelengths(iw)
-    end do
-    close(unit=20)
-
-    ! Angles
-
-    open(unit=20,file=trim(prefix)//'.mu')
-    do ia=1,2*size(angles)-1
-       write(20,'(ES23.16)') cos(angles_full(ia))
-    end do
-    close(unit=20)
-
-    ! Albedo
-    open(unit=20,file=trim(prefix)//'.alb')
-    do iw=1,size(wavelengths)
-       write(20,'(ES11.4)') csca(iw)/cext(iw)
-    end do
-    close(unit=20)
-
-    ! Chi (Kappa to Extinction)
-    open(unit=20,file=trim(prefix)//'.chi')
-    do iw=1,size(wavelengths)
-       write(20,'(ES11.4)') kappa_ext(iw)
-    end do
-    close(unit=20)
-
-    ! g
-    open(unit=20,file=trim(prefix)//'.g')
-    do iw=1,size(wavelengths)
-       write(20,'(ES11.4)') gsca(iw)
-    end do
-    close(unit=20)
-
-    ! P11
-    open(unit=20,file=trim(prefix)//'.f11')
-    do iw=1,size(wavelengths)
-       do ia=1,size(angles)*2-1
-          write(20,'(ES11.4," ")',advance='no') s11(iw,ia)
+       ! Wavelengths
+       open(unit=20,file=trim(prefix)//'.wav')
+       do iw=1,size(wavelengths)
+          write(20,'(ES23.16)') wavelengths(iw)
        end do
-       write(20,*)
-    end do
-    close(unit=20)
+       close(unit=20)
 
-    ! P12
-    open(unit=20,file=trim(prefix)//'.f12')
-    do iw=1,size(wavelengths)
-       do ia=1,size(angles)*2-1
-          write(20,'(ES11.4," ")',advance='no') s12(iw,ia)
-       end do
-       write(20,*)
-    end do
-    close(unit=20)
+       ! Angles
 
-    ! P33
-    open(unit=20,file=trim(prefix)//'.f33')
-    do iw=1,size(wavelengths)
-       do ia=1,size(angles)*2-1
-          write(20,'(ES11.4," ")',advance='no') s33(iw,ia)
+       open(unit=20,file=trim(prefix)//'.mu')
+       do ia=1,2*size(angles)-1
+          write(20,'(ES23.16)') cos(angles_full(ia))
        end do
-       write(20,*)
-    end do
-    close(unit=20)
+       close(unit=20)
 
-    ! P34
-    open(unit=20,file=trim(prefix)//'.f34')
-    do iw=1,size(wavelengths)
-       do ia=1,size(angles)*2-1
-          write(20,'(ES11.4," ")',advance='no') s34(iw,ia)
+       ! Albedo
+       open(unit=20,file=trim(prefix)//'.alb')
+       do iw=1,size(wavelengths)
+          write(20,'(ES11.4)') csca(iw)/cext(iw)
        end do
-       write(20,*)
-    end do
-    close(unit=20)
+       close(unit=20)
+
+       ! Chi (Kappa to Extinction)
+       open(unit=20,file=trim(prefix)//'.chi')
+       do iw=1,size(wavelengths)
+          write(20,'(ES11.4)') kappa_ext(iw)
+       end do
+       close(unit=20)
+
+       ! g
+       open(unit=20,file=trim(prefix)//'.g')
+       do iw=1,size(wavelengths)
+          write(20,'(ES11.4)') gsca(iw)
+       end do
+       close(unit=20)
+
+       ! P11
+       open(unit=20,file=trim(prefix)//'.f11')
+       do iw=1,size(wavelengths)
+          do ia=1,size(angles)*2-1
+             write(20,'(ES11.4," ")',advance='no') s11(iw,ia)
+          end do
+          write(20,*)
+       end do
+       close(unit=20)
+
+       ! P12
+       open(unit=20,file=trim(prefix)//'.f12')
+       do iw=1,size(wavelengths)
+          do ia=1,size(angles)*2-1
+             write(20,'(ES11.4," ")',advance='no') s12(iw,ia)
+          end do
+          write(20,*)
+       end do
+       close(unit=20)
+
+       ! P33
+       open(unit=20,file=trim(prefix)//'.f33')
+       do iw=1,size(wavelengths)
+          do ia=1,size(angles)*2-1
+             write(20,'(ES11.4," ")',advance='no') s33(iw,ia)
+          end do
+          write(20,*)
+       end do
+       close(unit=20)
+
+       ! P34
+       open(unit=20,file=trim(prefix)//'.f34')
+       do iw=1,size(wavelengths)
+          do ia=1,size(angles)*2-1
+             write(20,'(ES11.4," ")',advance='no') s34(iw,ia)
+          end do
+          write(20,*)
+       end do
+       close(unit=20)
 
     case(3)
 
@@ -304,7 +306,8 @@ contains
           write(20,*)
           write(20,'(3X,"angle",5X,"S11",9X,"S22",9X,"S33",9X,"S44",9X,"S12",9X,"S34",9X)')
           do ia=1,size(angles)*2-1
-             write(20,'(F7.2,6(1X,ES11.4))') angles_full(ia)*180._dp/pi, s11(iw,ia),s11(iw,ia),s33(iw,ia),s33(iw,ia),s12(iw,ia),s34(iw,ia)
+             write(20,'(F7.2,6(1X,ES11.4))') angles_full(ia)*180._dp/pi, &
+                  & s11(iw,ia),s11(iw,ia),s33(iw,ia),s33(iw,ia),s12(iw,ia),s34(iw,ia)
           end do
           write(20,*)
           close(unit=20)
