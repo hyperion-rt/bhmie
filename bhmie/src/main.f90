@@ -1,5 +1,6 @@
-program test
+program main
 
+  use lib_array
   use distributions
   use materials
   use types
@@ -36,8 +37,11 @@ program test
   ! loop variable for components
 
   integer :: output_format
-  
+
   real(dp) :: gas_to_dust
+
+  integer :: n_wav
+  real(dp) :: wav_min, wav_max
 
   ! retrieve parameter file from command-line
   call get_command_argument(1, input_file)
@@ -56,6 +60,10 @@ program test
   read(32,*) n_small_angles
   read(32,*) n_components
   read(32,*) gas_to_dust
+  read(32,*) wav_min, wav_max, n_wav
+
+  allocate(wavelengths(n_wav))
+  call logspace(wav_min, wav_max, wavelengths)
 
   ! allocate arrays
   allocate(abundance(n_components))
@@ -68,25 +76,13 @@ program test
      read(32,*) abundance(ic)
      read(32,*) density(ic)
      call read_material(32, m(ic))
+     call interpolate_material(m(ic), wavelengths)
      call read_distribution(32, d(ic))
   end do
 
   close(unit=32)
 
-  do ic=2,n_components
-     if(size(m(1)%wavelengths).ne.size(m(ic)%wavelengths)) then
-        print *,'Size of wavelength arrays do not match for different materials'
-        stop
-     end if
-     if(any(m(1)%wavelengths.ne.m(ic)%wavelengths)) then
-        print *,'Wavelength arrays do not match for different materials'
-        stop
-     end if
-  end do
+  call compute_dust_properties(prefix,output_format,abundance,m,d,density, &
+       & gas_to_dust,amin,amax,na,wavelengths,n_angles,n_small_angles)
 
-  allocate(wavelengths(size(m(1)%wavelengths)))
-  wavelengths = m(1)%wavelengths
-
-  call compute_dust_properties(prefix,output_format,abundance,m,d,density,gas_to_dust,amin,amax,na,wavelengths,n_angles,n_small_angles)
-
-end program test
+end program main

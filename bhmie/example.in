@@ -7,6 +7,7 @@
 10 = number of extra fine scattering angles
 1 = number of components
 0 = gas-to-dust ratio
+0.01 1000 100 = wavelength parameters
 ---
 1.0 = mass fraction in this component
 3.5 = grain density (g/cm^3)
