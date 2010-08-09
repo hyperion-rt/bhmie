@@ -1,0 +1,9 @@
+This example demonstrates the use of numerical size distributions and multiple
+components by reproducing the dust properties for the R_v=3.1 model from Kim,
+Martin, and Hendry 1994, ApJ, 422, 164. The size distributions were digitized
+from the publication.
+
+To run, use:
+
+    ../../bin/bhmie kmh94_3.1.in
+

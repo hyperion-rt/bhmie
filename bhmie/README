@@ -21,9 +21,7 @@ To use, type:
 
   bin/bhmie parameter_file
 
-for example:
-
-  bin/bhmie example.in
+Examples are included inside the examples/ directory.
 
 Parameters
 ==========
