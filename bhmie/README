@@ -12,7 +12,7 @@ To install, type:
   ./configure
   make
 
-which will create bin/bhmie. If needed, change the compiler in the Makefile.
+which will create bin/bhmie. The configure script will automatically pick the Fortran compiler.
 
 Running
 =======
