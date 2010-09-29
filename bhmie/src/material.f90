@@ -22,7 +22,7 @@ contains
 
     character(len=1000) :: filename
     integer :: n_wav,ioerr,iw
-    real(dp) :: ref_real, ref_imag
+    real(dp) :: ref_real, ref_imag, tmp
 
     read(unit, *) filename
 
@@ -30,7 +30,7 @@ contains
     n_wav = 0
     open(unit=33,file=filename, status='old')
     do
-       read(33,*,iostat=ioerr)
+       read(33,*,iostat=ioerr) tmp
        if(ioerr.ne.0) exit
        n_wav = n_wav + 1
     end do
