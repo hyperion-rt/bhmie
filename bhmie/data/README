@@ -1,0 +1,44 @@
+This directory contains refractive index files that can be used with the bhmie
+code. Other files can also be used: the files should contain no header, and
+three columns:
+
+ - the wavelength in microns
+ - the real part of the refractive index
+ - the imaginary part of the refractive index
+
+Silicate
+========
+
+silicate_ld93                 Astronomical silicates
+                              Laor & Draine 1993, ApJ, 402, 441
+
+silicate_wd00                 Astronomical silicates
+                              Weingartner & Draine 2000
+
+silicate_d03                  Astronomical silicates
+                              (currently recommended by B. Draine)
+                              Draine 2003, ApJ, 598, 1026
+
+Graphite
+========
+
+graphite_par_ld93             Graphite, E parallel
+                              Laor & Draine 1993, ApJ, 402, 441
+graphite_per_ld93             Graphite, E perpendicular
+                              Laor & Draine 1993, ApJ, 402, 441
+
+graphite_per_d03_0.01         Graphite, E perpendicular (a = 0.01 microns)
+                              (currently recommended by B. Draine)
+                              Draine 2003, ApJ, 598, 1026
+
+graphite_per_d03_0.10         Graphite, E perpendicular (a = 0.10 microns)
+                              (currently recommended by B. Draine)
+                              Draine 2003, ApJ, 598, 1026
+
+graphite_par_d03_0.01         Graphite, E parallel (a = 0.01 microns)
+                              (currently recommended by B. Draine)
+                              Draine 2003, ApJ, 598, 1026
+
+graphite_par_d03_0.10         Graphite, E parallel (a = 0.10 microns)
+                              (currently recommended by B. Draine)
+                              Draine 2003, ApJ, 598, 1026
