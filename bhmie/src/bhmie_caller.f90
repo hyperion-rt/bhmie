@@ -215,81 +215,16 @@ contains
 
     case(2)
 
-       ! Wavelengths
-       open(unit=20,file=trim(prefix)//'.wav')
-       do iw=1,size(wavelengths)
-          write(20,'(ES23.16)') wavelengths(iw)
-       end do
-       close(unit=20)
+       call write_1d_array(trim(prefix)//'.wav','ES23.16',wavelengths) ! Wavelengths
+       call write_1d_array(trim(prefix)//'.mu','ES23.16',cos(angles_full)) ! Angles
+       call write_1d_array(trim(prefix)//'.alb','ES11.4',csca/cext)! Albedo
+       call write_1d_array(trim(prefix)//'.chi','ES11.4',kappa_ext) ! Chi (Kappa to Extinction)
+       call write_1d_array(trim(prefix)//'.g','ES11.4',gsca) ! Average cos(theta)
 
-       ! Angles
-
-       open(unit=20,file=trim(prefix)//'.mu')
-       do ia=1,2*size(angles)-1
-          write(20,'(ES23.16)') cos(angles_full(ia))
-       end do
-       close(unit=20)
-
-       ! Albedo
-       open(unit=20,file=trim(prefix)//'.alb')
-       do iw=1,size(wavelengths)
-          write(20,'(ES11.4)') csca(iw)/cext(iw)
-       end do
-       close(unit=20)
-
-       ! Chi (Kappa to Extinction)
-       open(unit=20,file=trim(prefix)//'.chi')
-       do iw=1,size(wavelengths)
-          write(20,'(ES11.4)') kappa_ext(iw)
-       end do
-       close(unit=20)
-
-       ! g
-       open(unit=20,file=trim(prefix)//'.g')
-       do iw=1,size(wavelengths)
-          write(20,'(ES11.4)') gsca(iw)
-       end do
-       close(unit=20)
-
-       ! P11
-       open(unit=20,file=trim(prefix)//'.f11')
-       do iw=1,size(wavelengths)
-          do ia=1,size(angles)*2-1
-             write(20,'(ES11.4," ")',advance='no') s11(iw,ia)
-          end do
-          write(20,*)
-       end do
-       close(unit=20)
-
-       ! P12
-       open(unit=20,file=trim(prefix)//'.f12')
-       do iw=1,size(wavelengths)
-          do ia=1,size(angles)*2-1
-             write(20,'(ES11.4," ")',advance='no') s12(iw,ia)
-          end do
-          write(20,*)
-       end do
-       close(unit=20)
-
-       ! P33
-       open(unit=20,file=trim(prefix)//'.f33')
-       do iw=1,size(wavelengths)
-          do ia=1,size(angles)*2-1
-             write(20,'(ES11.4," ")',advance='no') s33(iw,ia)
-          end do
-          write(20,*)
-       end do
-       close(unit=20)
-
-       ! P34
-       open(unit=20,file=trim(prefix)//'.f34')
-       do iw=1,size(wavelengths)
-          do ia=1,size(angles)*2-1
-             write(20,'(ES11.4," ")',advance='no') s34(iw,ia)
-          end do
-          write(20,*)
-       end do
-       close(unit=20)
+       call write_2d_array(trim(prefix)//'.f11','ES11.4',s11)
+       call write_2d_array(trim(prefix)//'.f12','ES11.4',s12)
+       call write_2d_array(trim(prefix)//'.f33','ES11.4',s33)
+       call write_2d_array(trim(prefix)//'.f34','ES11.4',s34)
 
     case(3)
 
@@ -335,6 +270,33 @@ contains
     integer :: k
     write(6,'(256a1)', advance='no') (back, k =1,(50*i/imax)+9)
   end subroutine delete_progress_bar
+
+  subroutine write_1d_array(filename,fmt,array)
+    implicit none
+    character(len=*),intent(in) :: filename,fmt
+    real(dp),intent(in) :: array(:)
+    integer :: i
+    open(unit=20,file=filename)
+    do i=1,size(array)
+       write(20,'('//trim(fmt)//')') array(i)
+    end do
+    close(unit=20)
+  end subroutine write_1d_array
+
+  subroutine write_2d_array(filename,fmt,array)
+    implicit none
+    character(len=*),intent(in) :: filename,fmt
+    real(dp),intent(in) :: array(:,:)
+    integer i1,i2
+    open(unit=20,file=filename)
+    do i1=1,size(array,1)
+       do i2=1,size(array,2)
+          write(20,'('//trim(fmt)//'," ")',advance='no') array(i1,i2)
+       end do
+       write(20,*)
+    end do
+    close(unit=20)
+  end subroutine write_2d_array
 
 end module bhmie_wrapper
 
