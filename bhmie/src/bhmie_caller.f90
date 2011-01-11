@@ -179,7 +179,7 @@ contains
              cext = cext + cext_i * weight_number
              csca = csca + csca_i * weight_number
              cback = cback + cback_i * weight_number
-             gsca = gsca + gsca_i * weight_number
+             gsca = gsca + gsca_i * csca_i * weight_number
 
              ! Compute and add opacities to the totals
              kappa_ext = kappa_ext + cext_i / (volume * density(ic)) * weight_mass
@@ -189,6 +189,9 @@ contains
        end do
 
     end do
+
+    ! Normalize g
+    gsca = gsca / csca
 
     ! Create array with all the angles
     do ia=1,size(angles)
