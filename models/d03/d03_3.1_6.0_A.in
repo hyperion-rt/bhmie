@@ -11,19 +11,19 @@
 ---
 0.692 = mass fraction in this component
 3.50 = grain density (g/cm^3)
-'../bhmie/data/silicate_d03' = refractive index file
+'../../bhmie/data/silicate_d03' = refractive index file
 table = type of size distribution
 '../wd01/sizes/wd01_silicate_3.1_6.0_A' = size distribution parameters
 ---
 0.206 = mass fraction in this component
 2.24 = grain density (g/cm^3)
-'../bhmie/data/graphite_per_d03_0.01' = refractive index file
+'../../bhmie/data/graphite_per_d03_0.01' = refractive index file
 table = type of size distribution
 '../wd01/sizes/wd01_graphite_3.1_6.0_A' = size distribution parameters
 ---
 0.102 = mass fraction in this component
 2.24 = grain density (g/cm^3)
-'../bhmie/data/graphite_par_d03_0.01' = refractive index file
+'../../bhmie/data/graphite_par_d03_0.01' = refractive index file
 table = type of size distribution
 '../wd01/sizes/wd01_graphite_3.1_6.0_A' = size distribution parameters
 ---
