@@ -232,7 +232,7 @@ contains
     case(3)
 
        do iw=1,size(wavelengths)
-          write(suffix,'(ES10.4)') wavelengths(iw)
+          write(suffix,'(ES11.4)') wavelengths(iw)
           open(unit=20,file=trim(prefix)//'.'//trim(suffix))
           write(20,'("Dust properties calculated using Bohren and Huffman subroutine")')
           write(20,'("kappa calculated using gas-to-dust ratio of ",F6.2)') gas_to_dust
