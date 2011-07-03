@@ -31,7 +31,9 @@ contains
     real(dp) :: chi,chi0,chi1,dang,dx,en,fn,p,psi,psi0,psi1,theta,xstop,ymod
     real(dp), dimension(nang) :: amu, pi, pi0, pi1, tau
     complex(dp) :: an,an1,bn,bn1,drefrl,xi,xi1,y
-    complex(dp),dimension(nmxx) :: d
+
+    complex(dp),allocatable,dimension(:) :: d
+    allocate(d(nmxx))
 
     !***********************************************************************
     !
