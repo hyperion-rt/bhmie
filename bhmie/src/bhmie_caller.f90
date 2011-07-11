@@ -232,7 +232,7 @@ contains
 
        do iw=1,size(wavelengths)
           write(suffix,'(ES11.4)') wavelengths(iw)
-          open(unit=20,file=trim(prefix)//'.'//trim(suffix))
+          open(unit=20,file=trim(adjustl(prefix))//'.'//trim(adjustl(suffix)))
           write(20,'("Dust properties calculated using Bohren and Huffman subroutine")')
           write(20,'("kappa calculated using gas-to-dust ratio of ",F6.2)') gas_to_dust
           write(20,'(F8.4," = wavelength (microns)")') wavelengths(iw)
