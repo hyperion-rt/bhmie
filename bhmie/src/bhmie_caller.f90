@@ -57,7 +57,6 @@ contains
     real(dp) :: cback(size(wavelengths))
     real(dp) :: kappa_ext(size(wavelengths))
     real(dp) :: gsca(size(wavelengths))
-    real(dp) :: pmax(size(wavelengths))
     real(dp) :: angles_full(2*(n_angles+n_small_angles)-1)
     real(dp) :: s11(size(wavelengths), 2*(n_angles+n_small_angles)-1)
     real(dp) :: s12(size(wavelengths), 2*(n_angles+n_small_angles)-1)
