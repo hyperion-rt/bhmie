@@ -17,41 +17,41 @@ Downloading
 
 To download, use
 
-git clone http://github.com/astrofrog/dust.git
-cd dust
-git submodule init
-git submodule update
+    git clone http://github.com/astrofrog/dust.git
+    cd dust
+    git submodule init
+    git submodule update
 
 Updating
 --------
 
 To update, go inside the dust/ directory, and use
 
-git pull
-git submodule update
+    git pull
+    git submodule update
 
 Compiling
 ---------
 
 To install, type:
 
-  ./configure
-  make
-  make install
+    ./configure
+    make
+    make install
 
 which will create bin/bhmie. The configure script will automatically pick the
 Fortran compiler. To install in a user-defined path, use e.g.:
 
-  ./configure --prefix=$HOME/usr
-  make
-  make install
+    ./configure --prefix=$HOME/usr
+    make
+    make install
 
 Running
 =======
 
 To use, type:
 
-  bin/bhmie parameter_file
+    bin/bhmie parameter_file
 
 Examples are included inside the examples/ directory.
 
@@ -92,22 +92,22 @@ There are three types of size distributions supported:
 
 * 'power' - a power-law distribution:
 
-    n(a) ~ a^apower
+        n(a) ~ a^apower
 
   The parameters to specify are:
 
-    amin amax apower
+        amin amax apower
 
   where amin and amax are the minimum and maximum size for the distribution,
   and apower is the power of the size distribution.
 
 * 'ped' - a power-law distribution with exponential dropoff:
 
-    n(a) ~ a^apower * exp(a/aturn)
+        n(a) ~ a^apower * exp(a/aturn)
 
   The parameters to specify are:
 
-    amin aturn apower
+        amin aturn apower
 
   where amin and aturn are the minimum and turn-off size for the distribution,
   and apower is the power of the size distribution.
