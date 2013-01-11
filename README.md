@@ -4,6 +4,11 @@ About
 This is a wrapper program for the subroutine by C.F. Bohren and D. Huffman
 (improved by B. Draine).
 
+Requirements
+============
+
+A recent Fortran compiler.
+
 Downloading
 ===========
 
