@@ -1,16 +1,19 @@
 About
 =====
 
-This is a wrapper program for the subroutine by C.F. Bohren and D. Huffman
-(improved by B. Draine).
+This is a wrapper program for the dust scattering property calculation code
+by C.F. Bohren and D. Huffman (improved by B. Draine).
+
+Installation
+============
 
 Requirements
-============
+------------
 
 A recent Fortran compiler.
 
 Downloading
-===========
+-----------
 
 To download, use
 
@@ -20,15 +23,15 @@ git submodule init
 git submodule update
 
 Updating
-========
+--------
 
 To update, go inside the dust/ directory, and use
 
 git pull
 git submodule update
 
-Installation
-============
+Compiling
+---------
 
 To install, type:
 
