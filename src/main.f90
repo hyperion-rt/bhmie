@@ -30,7 +30,7 @@ program main
   real(dp) :: amin, amax
   ! overall size range and number of size bins to use 
 
-  real(dp),allocatable :: density(:), abundance(:), wavelengths(:)
+  real(dp),allocatable :: density(:), abundance_mass(:), wavelengths(:)
   ! density of the various components
 
   integer :: ic
@@ -66,14 +66,14 @@ program main
   call logspace(wav_min, wav_max, wavelengths)
 
   ! allocate arrays
-  allocate(abundance(n_components))
+  allocate(abundance_mass(n_components))
   allocate(density(n_components))
   allocate(m(n_components))
   allocate(d(n_components))
 
   do ic=1,n_components
      read(32,*)
-     read(32,*) abundance(ic)
+     read(32,*) abundance_mass(ic)
      read(32,*) density(ic)
      call read_material(32, m(ic))
      call interpolate_material(m(ic), wavelengths)
@@ -82,7 +82,10 @@ program main
 
   close(unit=32)
 
-  call compute_dust_properties(prefix,output_format,abundance,m,d,density, &
+  ! Re-normalize mass abundance
+  abundance_mass = abundance_mass / sum(abundance_mass)
+
+  call compute_dust_properties(prefix,output_format,abundance_mass,m,d,density, &
        & gas_to_dust,amin,amax,na,wavelengths,n_angles,n_small_angles)
 
 end program main

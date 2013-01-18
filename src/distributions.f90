@@ -144,6 +144,21 @@ contains
 
   end function distribution_weight_number
 
+  real(dp) function average_volume(d)
+
+    implicit none
+
+    type(size_distribution),intent(in) :: d
+
+       select case(d%type)
+       case(2)
+           average_volume = integral_loglog(d%a, d%n * 4. / 3. * 3.1415926 * d%a ** 3) / integral_loglog(d%a, d%n)
+       case default
+          stop "Not implemented"
+       end select
+
+  end function average_volume
+
   real(dp) function distribution_weight_mass(d, amin, amax)
 
     implicit none

@@ -13,7 +13,7 @@ module bhmie_wrapper
 
 contains
 
-  subroutine compute_dust_properties(prefix, output_format, abundance, m, d, &
+  subroutine compute_dust_properties(prefix, output_format, abundance_mass, m, d, &
        & density, gas_to_dust, amin, amax, na, wavelengths, n_angles, n_small_angles)
 
     implicit none
@@ -36,7 +36,7 @@ contains
     integer,intent(in) :: na
     ! number of size bins to use
 
-    real(dp),intent(in) :: abundance(:), density(:), gas_to_dust, wavelengths(:)
+    real(dp),intent(in) :: abundance_mass(:), density(:), gas_to_dust, wavelengths(:)
     ! the density of the grains
 
     integer,intent(inout) :: n_angles, n_small_angles
@@ -83,8 +83,11 @@ contains
     real(dp) :: cross_section
     real(dp) :: volume
     real(dp) :: weight_number
-    real(dp) :: weight_mass
     ! variables used in the summation
+
+    real(dp),allocatable :: abundance_number(:)
+    real(dp),allocatable :: average_particle_mass(:)
+    ! number abundance and average particle mass
 
     integer :: iw,ia
     ! loop variables
@@ -93,6 +96,24 @@ contains
     ! convenience variables for size distribution
 
     integer :: current
+
+    ! Calculate average particle mass, and number abundance
+
+    allocate(abundance_number(size(m)))
+    allocate(average_particle_mass(size(m)))
+
+    do ic=1,size(m)
+
+       ! Average particle mass is average volume times density
+       average_particle_mass(ic) = average_volume(d(ic)) / 1.e12 * density(ic)
+
+       ! Number abundance
+       abundance_number(ic) = abundance_mass(ic) / average_particle_mass(ic)
+
+    end do
+
+    ! Renormalize abundances
+    abundance_number = abundance_number / sum(abundance_number)
 
     ! Compute angles
     angles(1) = 0.
@@ -103,7 +124,7 @@ contains
     ! Add small angles at lower end (will also be mirrored at high end)
     do ia=1,n_small_angles
        current = n_small_angles + 2 - ia
-       angles(current) = angles(current+1) / sqrt(10.) 
+       angles(current) = angles(current+1) / sqrt(10.)
     end do
 
     ! Initialize running totals
@@ -139,11 +160,10 @@ contains
 
        do ic=1,size(m)
 
-          ! Find the weights to be applied to this size, both in number and mass
-          weight_number = distribution_weight_number(d(ic),a1,a2) * abundance(ic)
-          weight_mass = distribution_weight_mass(d(ic),a1,a2) * abundance(ic)
+          ! Find the weights to be applied to this size (in number)
+          weight_number = distribution_weight_number(d(ic),a1,a2) * abundance_number(ic)
 
-          if(weight_number > 0._dp .or. weight_mass > 0._dp) then
+          if(weight_number > 0._dp) then
 
              ! Loop over wavelengths, and find properties for each
              do iw=1,size(m(ic)%wavelengths)
@@ -180,14 +200,13 @@ contains
              cback = cback + cback_i * weight_number
              gsca = gsca + gsca_i * csca_i * weight_number
 
-             ! Compute and add opacities to the totals
-             kappa_ext = kappa_ext + cext_i / (volume * density(ic)) * weight_mass
-
           end if
 
        end do
 
     end do
+
+    kappa_ext = cext * sum(abundance_mass / average_particle_mass)
 
     ! Normalize g
     gsca = gsca / csca
