@@ -151,6 +151,10 @@ contains
     type(size_distribution),intent(in) :: d
 
        select case(d%type)
+       case(1)
+           average_volume = 4. / 3. * 3.1415926 * (d%amax**(d%apower+4._dp) - d%amin**(d%apower+4._dp)) &
+                                                / (d%amax**(d%apower+1._dp) - d%amin**(d%apower+1._dp)) &
+                                                * (d%apower + 1._dp) / (d%apower + 4._dp)
        case(2)
            average_volume = integral_loglog(d%a, d%n * 4. / 3. * 3.1415926 * d%a ** 3) / integral_loglog(d%a, d%n)
        case default
