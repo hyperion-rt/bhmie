@@ -1,0 +1,29 @@
+'kmh94_3.1_full/kmh94_3.1_full' = prefix for results
+2 = output format (see README)
+0.001 = minimum grain size
+2. = maximum grain size
+1000 = number of different grain sizes
+181 = number of scattering angles
+10 = number of extra fine scattering angles
+3 = number of components
+141.84 = gas-to-dust ratio
+0.01 1000 250 = wavelength parameters
+---
+0.627 = mass fraction in this component
+3.30 = grain density (g/cm^3)
+'../ri-data/silicate_ld93' = refractive index file
+table = type of size distribution
+size_silicate_3.1 = size distribution parameters
+---
+0.248 = mass fraction in this component
+2.26 = grain density (g/cm^3)
+'../ri-data/graphite_per_ld93' = refractive index file
+table = type of size distribution
+size_graphite_3.1 = size distribution parameters
+---
+0.125 = mass fraction in this component
+2.26 = grain density (g/cm^3)
+'../ri-data/graphite_par_ld93' = refractive index file
+table = type of size distribution
+size_graphite_3.1 = size distribution parameters
+---
