@@ -62,12 +62,12 @@ The parameter file contains, in the following order:
 
 - the prefix for the output files
 - the file format, which can be:
-    1 = single file with wavelength, extinction and scattering cross-sections,
-        opacity to extinction, <cos(theta)>, and the maximum linear polarization.
-    2 = separate files for the wavelength (.wav), scattering angles (.mu),
+    - 1 = single file with wavelength, extinction and scattering cross-sections,
+        opacity to extinction, the average cos(theta), and the maximum linear polarization.
+    - 2 = separate files for the wavelength (.wav), scattering angles (.mu),
         albedo (.alb), opacity to extinction (.chi), <cos(theta)> (.g), and the
         scattering matrix elements (.f11, .f12, .f33, .f34)
-    3 = one file per wavelength, contains the scattering matrix elements
+    - 3 = one file per wavelength, contains the scattering matrix elements
 - the minimum grain size to use for the calculations (in microns)
 - the maximum grain size to use for the calculations (in microns)
 - the number of grain sizes to use for the calculations
