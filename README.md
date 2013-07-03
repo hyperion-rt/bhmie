@@ -17,7 +17,7 @@ Downloading
 
 To download, use
 
-    git clone http://github.com/astrofrog/dust.git
+    git clone http://github.com/hyperion-rt/bhmie.git
     cd dust
     git submodule init
     git submodule update
