@@ -8,11 +8,21 @@ OBJECTS =	src/types.f90 \
 		src/bhmie_caller.f90 \
 		src/main.f90
 
+TAR_OBJECTS =	src LICENSE Makefile.in README.md configure examples
+
+VERSION = 	v0.1.0
+
 bhmie:		$(OBJECTS)
+		mkdir -p bin/
 		$(FC) $(OBJECTS) -o bin/bhmie
 
 install:	bin/bhmie
+		mkdir -p @prefix@/bin/
 		cp bin/bhmie @prefix@/bin/
 
+clean:;		rm -r src/modules/*.mod bin dist
 
-clean:;		rm src/modules/*.mod bin/bhmie
+sdist:		$(TAR_OBJECTS)
+		mkdir -p dist/bhmie_$(VERSION)
+		cp -RP $(TAR_OBJECTS) dist/bhmie_$(VERSION)/
+		cd dist ; tar czvf bhmie_$(VERSION).tgz bhmie_$(VERSION)
