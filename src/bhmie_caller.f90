@@ -4,6 +4,7 @@ module bhmie_wrapper
   use materials
   use distributions
   use bhmie_routine, pi => pii
+  !$use omp_lib
 
   implicit none
   save
@@ -144,6 +145,7 @@ contains
 
     call print_progress_bar(1,na)
 
+    !$omp parallel do default(firstprivate) shared(cext,csca,cback,gsca,kappa_ext,s11,s12,s33,s34)
     do ia=1,na
 
        call delete_progress_bar(ia,na)
@@ -158,6 +160,7 @@ contains
        cross_section = pi*a*a*1.e-8
        volume = 4._dp/3._dp*pi*a*a*a*1.e-12
 
+       
        do ic=1,size(m)
 
           ! Find the weights to be applied to this size (in number)
@@ -187,17 +190,25 @@ contains
                 s34_i = aimag(s2_i * conjg(s1_i))
 
                 ! Add to running total
+                !$omp atomic
                 s11(iw, :) = s11(iw, :) + s11_i * weight_number
+                !$omp atomic
                 s12(iw, :) = s12(iw, :) + s12_i * weight_number
+                !$omp atomic
                 s33(iw, :) = s33(iw, :) + s33_i * weight_number
+                !$omp atomic
                 s34(iw, :) = s34(iw, :) + s34_i * weight_number
 
              end do
 
              ! Add values for single size to the totals
+             !$omp atomic
              cext = cext + cext_i * weight_number
+             !$omp atomic
              csca = csca + csca_i * weight_number
+             !$omp atomic
              cback = cback + cback_i * weight_number
+             !$omp atomic
              gsca = gsca + gsca_i * csca_i * weight_number
 
           end if
@@ -205,6 +216,7 @@ contains
        end do
 
     end do
+    !$omp end parallel do
 
     kappa_ext = cext * sum(abundance_mass / average_particle_mass)
 
