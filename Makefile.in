@@ -16,6 +16,10 @@ bhmie:		$(OBJECTS)
 		mkdir -p bin/
 		$(FC) $(OBJECTS) -o bin/bhmie
 
+parallel:	$(OBJECTS)
+		mkdir -p bin/
+		$(FC) -fopenmp $(OBJECTS) -o bin/bhmie 
+
 install:	bin/bhmie
 		mkdir -p @prefix@/bin/
 		cp bin/bhmie @prefix@/bin/

@@ -190,26 +190,22 @@ contains
                 s34_i = aimag(s2_i * conjg(s1_i))
 
                 ! Add to running total
-                !$omp atomic
+                !$omp critical
                 s11(iw, :) = s11(iw, :) + s11_i * weight_number
-                !$omp atomic
                 s12(iw, :) = s12(iw, :) + s12_i * weight_number
-                !$omp atomic
                 s33(iw, :) = s33(iw, :) + s33_i * weight_number
-                !$omp atomic
                 s34(iw, :) = s34(iw, :) + s34_i * weight_number
+                !$omp end critical
 
              end do
 
              ! Add values for single size to the totals
-             !$omp atomic
+             !$omp critical
              cext = cext + cext_i * weight_number
-             !$omp atomic
              csca = csca + csca_i * weight_number
-             !$omp atomic
              cback = cback + cback_i * weight_number
-             !$omp atomic
              gsca = gsca + gsca_i * csca_i * weight_number
+             !$omp end critical
 
           end if
 
