@@ -15,7 +15,7 @@ module bhmie_wrapper
 contains
 
   subroutine compute_dust_properties(prefix, output_format, abundance_mass, m, d, &
-       & density, gas_to_dust, amin, amax, na, wavelengths, n_angles, n_small_angles)
+       & density, gas_to_dust, amin, amax, na, wavelengths, n_angles, n_small_angles,n_threads)
 
     implicit none
 
@@ -24,6 +24,8 @@ contains
 
     integer,intent(in) :: output_format
     ! the file format for outputting
+
+    integer,intent(in) :: n_threads
 
     type(material),intent(in) :: m(:)
     ! list of materials
@@ -145,7 +147,7 @@ contains
 
     call print_progress_bar(1,na)
 
-    !$omp parallel do default(firstprivate) shared(cext,csca,cback,gsca,kappa_ext,s11,s12,s33,s34)
+    !$omp parallel do default(firstprivate) shared(cext,csca,cback,gsca,kappa_ext,s11,s12,s33,s34) num_threads(n_threads)
     do ia=1,na
 
        call delete_progress_bar(ia,na)
