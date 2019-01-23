@@ -66,6 +66,8 @@ program main
   read(32,*) wav_min, wav_max, n_wav
   !$ read(32,*) n_threads
 
+  !$ print*,"Running in parallel with ",n_threads," threads"
+
   allocate(wavelengths(n_wav))
   call logspace(wav_min, wav_max, wavelengths)
 
