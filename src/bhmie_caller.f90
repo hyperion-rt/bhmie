@@ -149,6 +149,7 @@ contains
 
     !$omp parallel do default(firstprivate) shared(cext,csca,cback,gsca,kappa_ext,s11,s12,s33,s34) num_threads(n_threads)
     do ia=1,na
+       !$ if ia .eq. 1 print*,"Number of threads in use = ", omp_get_num_threads()
 
        call delete_progress_bar(ia,na)
        call print_progress_bar(ia,na)
