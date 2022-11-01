@@ -13,6 +13,8 @@ elif test "$FC" == gfortran
 then
 	AC_SUBST(posix_module,posix_empty)
 	AC_SUBST(extra,'-Jsrc/modules -Isrc/modules -ffree-line-length-none')
+	AC_SUBST(omp_flags,'-fopenmp')
 fi
+
 
 AC_OUTPUT(Makefile)

@@ -4,6 +4,7 @@ module bhmie_wrapper
   use materials
   use distributions
   use bhmie_routine, pi => pii
+  !$use omp_lib
 
   implicit none
   save
@@ -14,7 +15,7 @@ module bhmie_wrapper
 contains
 
   subroutine compute_dust_properties(prefix, output_format, abundance_mass, m, d, &
-       & density, gas_to_dust, amin, amax, na, wavelengths, n_angles, n_small_angles)
+       & density, gas_to_dust, amin, amax, na, wavelengths, n_angles, n_small_angles,n_threads)
 
     implicit none
 
@@ -23,6 +24,8 @@ contains
 
     integer,intent(in) :: output_format
     ! the file format for outputting
+
+    integer,intent(in) :: n_threads
 
     type(material),intent(in) :: m(:)
     ! list of materials
@@ -144,7 +147,11 @@ contains
 
     call print_progress_bar(1,na)
 
+    !$call omp_set_num_threads(n_threads)
+
+    !$omp parallel do default(firstprivate) shared(cext,csca,cback,gsca,kappa_ext,s11,s12,s33,s34) num_threads(n_threads)
     do ia=1,na
+       !$if ia .eq. 1 print*,"Number of threads in use = ", omp_get_num_threads()
 
        call delete_progress_bar(ia,na)
        call print_progress_bar(ia,na)
@@ -158,6 +165,7 @@ contains
        cross_section = pi*a*a*1.e-8
        volume = 4._dp/3._dp*pi*a*a*a*1.e-12
 
+       
        do ic=1,size(m)
 
           ! Find the weights to be applied to this size (in number)
@@ -187,24 +195,29 @@ contains
                 s34_i = aimag(s2_i * conjg(s1_i))
 
                 ! Add to running total
+                !$omp critical (inner_loop)
                 s11(iw, :) = s11(iw, :) + s11_i * weight_number
                 s12(iw, :) = s12(iw, :) + s12_i * weight_number
                 s33(iw, :) = s33(iw, :) + s33_i * weight_number
                 s34(iw, :) = s34(iw, :) + s34_i * weight_number
+                !$omp end critical (inner_loop)
 
              end do
 
              ! Add values for single size to the totals
+             !$omp critical (middle_loop)
              cext = cext + cext_i * weight_number
              csca = csca + csca_i * weight_number
              cback = cback + cback_i * weight_number
              gsca = gsca + gsca_i * csca_i * weight_number
+             !$omp end critical (middle_loop)
 
           end if
 
        end do
 
     end do
+    !$omp end parallel do
 
     kappa_ext = cext * sum(abundance_mass / average_particle_mass)
 

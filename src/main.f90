@@ -43,6 +43,9 @@ program main
   integer :: n_wav
   real(dp) :: wav_min, wav_max
 
+
+  integer :: n_threads=1 !needed for omp parallel version
+
   ! retrieve parameter file from command-line
   call get_command_argument(1, input_file)
   if(trim(input_file)=='') stop "Usage: bhmie input_file"
@@ -61,6 +64,9 @@ program main
   read(32,*) n_components
   read(32,*) gas_to_dust
   read(32,*) wav_min, wav_max, n_wav
+  !$ read(32,*) n_threads
+
+  !$ print*,"Running in parallel with ",n_threads," threads"
 
   allocate(wavelengths(n_wav))
   call logspace(wav_min, wav_max, wavelengths)
@@ -86,6 +92,6 @@ program main
   abundance_mass = abundance_mass / sum(abundance_mass)
 
   call compute_dust_properties(prefix,output_format,abundance_mass,m,d,density, &
-       & gas_to_dust,amin,amax,na,wavelengths,n_angles,n_small_angles)
+       & gas_to_dust,amin,amax,na,wavelengths,n_angles,n_small_angles,n_threads)
 
 end program main
